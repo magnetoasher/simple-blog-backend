@@ -39,7 +39,7 @@ model Post {
 model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  Post      Post?    @relation(fields: [postId], references: [id])
+  post      Post?    @relation(fields: [postId], references: [id])
   postId    Int?
   content   String?
   author    User?    @relation(fields: [authorId], references: [id])
