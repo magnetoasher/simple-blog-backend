@@ -47,13 +47,19 @@ export const UserMutation = extendType({
         });
 
         if (!user) {
-          throw new Error(`No user found for email: ${email}`);
+          return {
+            errors: [
+              { field: 'email', message: `No user found for email: ${email}` },
+            ],
+          };
         }
 
         const passwordValid = await compare(password, user.password);
 
         if (!passwordValid) {
-          throw new Error('Invalid password');
+          return {
+            errors: [{ field: 'password', message: 'Invalid password' }],
+          };
         }
 
         return {
@@ -82,13 +88,19 @@ export const UserMutation = extendType({
         });
 
         if (!user) {
-          throw new Error('No user found for given token');
+          return {
+            errors: [
+              { field: 'token', message: 'No user found for given token' },
+            ],
+          };
         }
 
         const passwordValid = await compare(oldPassword, user.password);
 
         if (!passwordValid) {
-          throw new Error('Invalid password');
+          return {
+            errors: [{ field: 'oldPassword', message: 'Invalid password' }],
+          };
         }
 
         const hashedPassword = await hash(newPassword, 10);
@@ -96,6 +108,49 @@ export const UserMutation = extendType({
         const updatedUser = await context.prisma.user.update({
           where: { id: Number(userId) },
           data: { password: hashedPassword },
+        });
+
+        return {
+          token: sign({ userId }, APP_SECRET),
+          user: updatedUser,
+        };
+      },
+    });
+
+    t.field('changeEmail', {
+      type: 'AuthPayload',
+      args: {
+        password: nonNull(stringArg()),
+        newEmail: nonNull(stringArg()),
+        redirectUrl: stringArg(),
+      },
+      resolve: async (_parent, { password, newEmail }, context: Context) => {
+        const userId = getUserId(context);
+        const user = await context.prisma.user.findUnique({
+          where: {
+            id: Number(userId),
+          },
+        });
+
+        if (!user) {
+          return {
+            errors: [
+              { field: 'token', message: 'No user found for given token' },
+            ],
+          };
+        }
+
+        const passwordValid = await compare(password, user.password);
+
+        if (!passwordValid) {
+          return {
+            errors: [{ field: 'password', message: 'Invalid password' }],
+          };
+        }
+
+        const updatedUser = await context.prisma.user.update({
+          where: { id: Number(userId) },
+          data: { email: newEmail },
         });
 
         return {

@@ -10,7 +10,7 @@ import Post from './types/post';
 import { UserCreateInput, UserUniqueInput } from './types/user/input';
 import { PostCreateInput, PostOrderByUpdatedAtInput } from './types/post/input';
 import { DateTime, SortOrder } from './types/global';
-import { AuthPayload } from './types/user/payload';
+import { AuthPayload, ErrorPayload } from './types/user/payload';
 
 const schemaWithoutPermissions = makeSchema({
   types: [
@@ -20,6 +20,7 @@ const schemaWithoutPermissions = makeSchema({
     PostMutation,
     Post,
     User,
+    ErrorPayload,
     AuthPayload,
     UserUniqueInput,
     UserCreateInput,

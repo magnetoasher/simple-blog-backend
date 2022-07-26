@@ -3,6 +3,7 @@
 
 
 type AuthPayload {
+  errors: [ErrorPayload]
   token: String
   user: User
 }
@@ -12,7 +13,13 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type ErrorPayload {
+  field: String
+  message: String
+}
+
 type Mutation {
+  changeEmail(newEmail: String!, password: String!, redirectUrl: String): AuthPayload
   changePassword(newPassword: String!, oldPassword: String!): AuthPayload
   createDraft(data: PostCreateInput!): Post
   deletePost(id: Int!): Post
