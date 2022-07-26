@@ -48,9 +48,7 @@ export const UserMutation = extendType({
 
         if (!user) {
           return {
-            errors: [
-              { field: 'email', message: `No user found for email: ${email}` },
-            ],
+            errors: [{ field: 'email', message: 'Invalid credentials' }],
           };
         }
 
@@ -58,7 +56,7 @@ export const UserMutation = extendType({
 
         if (!passwordValid) {
           return {
-            errors: [{ field: 'password', message: 'Invalid password' }],
+            errors: [{ field: 'email', message: 'Invalid credentials' }],
           };
         }
 

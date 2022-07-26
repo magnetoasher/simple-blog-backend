@@ -5,6 +5,7 @@ export const ErrorPayload = objectType({
   definition(t) {
     t.string('field');
     t.string('message');
+    t.string('code');
   },
 });
 
