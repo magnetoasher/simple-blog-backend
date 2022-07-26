@@ -2,13 +2,13 @@
   "name": "henry-blog-backend",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
+    "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only src/server",
     "start": "node dist/server",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsc",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
-    "generate:nexus": "ts-node --transpile-only src/schema"
+    "generate:nexus": "ts-node -r tsconfig-paths/register --transpile-only src/schema"
   },
   "prettier": {
     "semi": true,
@@ -33,6 +33,7 @@
     "prisma": "4.1.0",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
+    "tsconfig-paths": "^4.0.0",
     "typescript": "4.7.4"
   },
   "prisma": {
