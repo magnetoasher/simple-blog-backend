@@ -8,6 +8,7 @@ export const User = objectType({
     t.string('firstName');
     t.string('lastName');
     t.nonNull.string('email');
+    t.string('avatar');
     t.nonNull.list.nonNull.field('posts', {
       type: 'Post',
       resolve: (parent, _, context: Context) => {

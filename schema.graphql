@@ -64,6 +64,7 @@ enum SortOrder {
 }
 
 type User {
+  avatar: String
   email: String!
   firstName: String
   id: Int!
