@@ -2,7 +2,7 @@
   "name": "henry-blog-backend",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only src/server",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn src/server",
     "start": "node dist/server",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsc",
