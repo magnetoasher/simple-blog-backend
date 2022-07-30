@@ -20,7 +20,6 @@ const rules = {
 
 export const permissions = shield({
   Query: {
-    me: rules.isAuthenticatedUser,
     draftsByUser: rules.isAuthenticatedUser,
     postById: rules.isAuthenticatedUser,
   },

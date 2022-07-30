@@ -16,6 +16,11 @@ export const UserQuery = extendType({
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
+
+        if (!userId) {
+          return null;
+        }
+
         return context.prisma.user.findUnique({
           where: {
             id: Number(userId),
