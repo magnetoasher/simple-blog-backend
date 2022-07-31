@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { nonNull, extendType, stringArg } from 'nexus';
 import { APP_SECRET, getUserId } from '@/utils';
 import { Context } from '@/context';
+import { UserInputError } from 'nexus-validate';
 
 export const UserMutation = extendType({
   type: 'Mutation',
@@ -15,9 +16,27 @@ export const UserMutation = extendType({
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
+      validate: ({ string }) => ({
+        email: string()
+          .email('Email must be a valid email')
+          .required('Email is required'),
+      }),
       resolve: async (_parent, args, context: Context) => {
         const hashedPassword = await hash(args.password, 10);
-        const user = await context?.prisma?.user!.create({
+
+        let user = await context.prisma.user.findUnique({
+          where: {
+            email: args.email,
+          },
+        });
+
+        if (user) {
+          throw new UserInputError('Email is already registered', {
+            invalidArgs: ['email'],
+          });
+        }
+
+        user = await context?.prisma?.user!.create({
           data: {
             firstName: args.firstName,
             lastName: args.lastName,

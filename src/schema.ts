@@ -1,5 +1,6 @@
 import { applyMiddleware } from 'graphql-middleware';
 import { makeSchema } from 'nexus';
+import { validatePlugin } from 'nexus-validate';
 import { permissions } from './permissions';
 import UserQuery from './types/user/query';
 import PostQuery from './types/post/query';
@@ -45,6 +46,7 @@ const schemaWithoutPermissions = makeSchema({
       },
     ],
   },
+  plugins: [validatePlugin()],
 });
 
 export const schema = applyMiddleware(schemaWithoutPermissions, permissions);
