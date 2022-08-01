@@ -16,7 +16,7 @@ export const PostQuery = extendType({
       },
     });
 
-    t.nonNull.list.nonNull.field('feed', {
+    t.nonNull.list.field('feed', {
       type: 'Post',
       args: {
         searchString: stringArg(),

@@ -20,7 +20,30 @@ export const PostMutation = extendType({
           data: {
             title: args.data.title,
             content: args.data.content,
-            authorId: userId,
+            authorId: userId!,
+          },
+        });
+      },
+    });
+
+    t.field('updatePost', {
+      type: 'Post',
+      args: {
+        id: nonNull(intArg()),
+        data: nonNull(
+          arg({
+            type: 'PostUpdateInput',
+          }),
+        ),
+      },
+      resolve: (_, args, context: Context) => {
+        return context.prisma.post.update({
+          where: {
+            id: args.id,
+          },
+          data: {
+            title: args.data.title,
+            content: args.data.content,
           },
         });
       },

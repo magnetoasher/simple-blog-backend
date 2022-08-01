@@ -1,44 +1,40 @@
 import { objectType } from 'nexus';
 import type { Context } from '@/context';
 
-export const Post = objectType({
-  name: 'Post',
+export const Comment = objectType({
+  name: 'Comment',
   definition(t) {
     t.nonNull.int('id');
     t.nonNull.field('createdAt', { type: 'DateTime' });
     t.nonNull.field('updatedAt', { type: 'DateTime' });
-    t.nonNull.string('title');
     t.nonNull.string('content');
-    t.nonNull.boolean('published');
-    t.nonNull.int('viewCount');
-    t.nonNull.int('commentCount');
     t.nonNull.field('author', {
       type: 'User',
       resolve: async (parent, _, context: Context) => {
-        const author = await context.prisma.post
+        const user = await context.prisma.comment
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .author();
 
-        return author!;
+        return user!;
       },
     });
-    t.nonNull.list.field('comments', {
-      type: 'Comment',
+    t.nonNull.field('post', {
+      type: 'Post',
       resolve: async (parent, _, context: Context) => {
-        const comments = await context.prisma.post
+        const post = await context.prisma.comment
           .findUnique({
             where: { id: parent.id || undefined },
           })
-          .comments();
+          .post();
 
-        return comments!;
+        return post!;
       },
     });
   },
 });
 
 export * from './input';
-export * from './query';
 export * from './mutation';
+export * from './query';

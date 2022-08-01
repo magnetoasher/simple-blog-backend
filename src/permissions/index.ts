@@ -21,6 +21,15 @@ const rules = {
     });
     return userId === authorId;
   }),
+  isCommentOwner: rule()(async (_parent, args, context) => {
+    const userId = getUserId(context);
+    const { authorId } = await context.prisma.comment.findUnique({
+      where: {
+        id: Number(args.id),
+      },
+    });
+    return userId === authorId;
+  }),
 };
 
 export const permissions = shield(
@@ -33,9 +42,13 @@ export const permissions = shield(
       signup: rules.isGuest,
       changePassword: rules.isAuthenticatedUser,
       createDraft: rules.isAuthenticatedUser,
+      updatePost: rules.isPostOwner,
       deletePost: rules.isPostOwner,
       incrementPostViewCount: rules.isAuthenticatedUser,
       togglePublishPost: rules.isPostOwner,
+      createComment: rules.isAuthenticatedUser,
+      updateComment: rules.isCommentOwner,
+      deleteComment: rules.isCommentOwner,
     },
   },
   {

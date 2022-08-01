@@ -4,7 +4,16 @@ export const PostCreateInput = extendInputType({
   type: 'PostCreateInput',
   definition(t) {
     t.nonNull.string('title');
-    t.string('content');
+    t.nonNull.string('content');
+    t.list.nonNull.field('comments', { type: 'CommentCreateInput' });
+  },
+});
+
+export const PostUpdateInput = extendInputType({
+  type: 'PostUpdateInput',
+  definition(t) {
+    t.nonNull.string('title');
+    t.nonNull.string('content');
   },
 });
 
