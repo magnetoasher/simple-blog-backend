@@ -8,6 +8,24 @@ type AuthPayload {
   user: User
 }
 
+type Comment {
+  author: User!
+  content: String!
+  createdAt: DateTime!
+  id: Int!
+  post: Post!
+  updatedAt: DateTime!
+}
+
+input CommentCreateInput {
+  content: String!
+  postId: ID!
+}
+
+input CommentUpdateInput {
+  content: String!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -22,17 +40,23 @@ type ErrorPayload {
 type Mutation {
   changeEmail(newEmail: String!, password: String!, redirectUrl: String): AuthPayload
   changePassword(newPassword: String!, oldPassword: String!): AuthPayload
+  createComment(data: CommentCreateInput!): Comment
   createDraft(data: PostCreateInput!): Post
+  deleteComment(id: Int!): Comment
   deletePost(id: Int!): Post
   incrementPostViewCount(id: Int!): Post
   login(email: String!, password: String!): AuthPayload
   signup(email: String!, firstName: String, lastName: String, password: String!): AuthPayload
   togglePublishPost(id: Int!): Post
+  updateComment(data: CommentUpdateInput!, id: Int!): Comment
+  updatePost(data: PostUpdateInput!, id: Int!): Post
 }
 
 type Post {
-  author: User
-  content: String
+  author: User!
+  commentCount: Int!
+  comments: [Comment]!
+  content: String!
   createdAt: DateTime!
   id: Int!
   published: Boolean!
@@ -42,7 +66,8 @@ type Post {
 }
 
 input PostCreateInput {
-  content: String
+  comments: [CommentCreateInput!]
+  content: String!
   title: String!
 }
 
@@ -50,10 +75,16 @@ input PostOrderByUpdatedAtInput {
   updatedAt: SortOrder!
 }
 
+input PostUpdateInput {
+  content: String!
+  title: String!
+}
+
 type Query {
   allUsers: [User!]!
+  commentsByPost(postId: Int!): [Comment]
   draftsByUser(userUniqueInput: UserUniqueInput!): [Post]
-  feed(orderBy: PostOrderByUpdatedAtInput, searchString: String, skip: Int, take: Int): [Post!]!
+  feed(orderBy: PostOrderByUpdatedAtInput, searchString: String, skip: Int, take: Int): [Post]!
   me: User
   postById(id: Int): Post
 }
@@ -69,7 +100,7 @@ type User {
   firstName: String
   id: Int!
   lastName: String
-  posts: [Post!]!
+  posts: [Post]
 }
 
 input UserCreateInput {
