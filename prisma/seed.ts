@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const userData = [
   {
-    firstName: 'Henry',
+    firstName: 'James',
     lastName: 'Brown',
     email: 'alice@prisma.io',
     password: '$2a$10$TLtC603wy85MM./ot/pvEec0w2au6sjPaOmLpLQFbxPdpJH9fDwwS', // myPassword42

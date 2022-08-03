@@ -1,5 +1,5 @@
 {
-  "name": "henry-blog-backend",
+  "name": "simple-blog-backend",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --files=src/generated/nexus.ts --respawn src/server",

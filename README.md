@@ -1,6 +1,6 @@
-# Henry Blog Backend
+# Simple-Blog-Backend
 
-This is GraphQL Backend for [Henry Blog](https://github.com/codinglittlecat/henry-blog.git)
+This is built with Express, GraphQL, Prisma and Postgres
 
 ## How to run
 
