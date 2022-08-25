@@ -1,6 +1,6 @@
 # Simple-Blog-Backend
 
-This is built with Express, GraphQL, Prisma and Postgres
+This is built with GraphQL, Prisma and Postgres
 
 ## How to run
 
